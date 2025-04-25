@@ -15,10 +15,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
     # create new socket object conn to comunicate with the customer
     # addr store the address of the client
     conn, addr = server_socket.accept()  # 等待客户端连接
-    
+    # receive message after 
     with conn:
         print(f"Connected by {addr}")
-        # receive 
+        # receive message repeatly
         while True:
             data = conn.recv(1024)  # 接收最多1024字节
             if not data:
