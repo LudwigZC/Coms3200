@@ -20,7 +20,7 @@ def unpack_message(sock: socket.socket) -> str:
     # parse 4 bytes into integer
     length = struct.unpack('!I', header)[0]
 
-    # continume reading until you get "length" bytes
+    # continue reading until you get "length" bytes
     data = b''
     while len(data) < length:
         more = sock.recv(length - len(data))
