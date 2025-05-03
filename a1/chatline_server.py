@@ -15,7 +15,7 @@ def handle_client(conn, addr):
             conn.close()
             return
 
-        # 用户名冲突检测（简单处理）
+        # 
         if username in clients:
             send_message(conn, f'[Server Message] Channel "general" already has user {username}.')
             conn.close()
