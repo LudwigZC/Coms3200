@@ -1,7 +1,7 @@
 import socket
 import sys
 import threading
-from msg_protocol import send_message, receive_message
+from msg_protocol import send_message, receive_message,connect_to_server
 
 
 # ========= Listen Threads =========
@@ -22,6 +22,7 @@ def listen_stdin(sock, username):
             send_message(sock, user_input)
             if user_input.strip() == "/quit":
                 break
+            
         except EOFError:
             # Spec line 182: EOF = /quit
             break
@@ -38,6 +39,12 @@ def listen_socket(sock):
         if message is None:
             print("Error: server connection closed.", file=sys.stderr)
             sys.exit(8)
-        print(message, flush=True)
+        elif message.startswith("SWITCH"):
+            _, port_str, user = message.strip().split()
+            sock.close()
+            connect_to_server(int(port_str), user)
+
+        else:
+            print(message, flush=True)
 
 

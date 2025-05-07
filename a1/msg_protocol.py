@@ -6,6 +6,8 @@
 # Related spec lines: 94–111, 239–244
 
 import struct
+import socket
+import sys
 
 HEADER_LENGTH = 4  # Fixed header size in bytes
 
@@ -45,3 +47,22 @@ def receive_message(sock) -> str:
         data += chunk
 
     return data.decode('utf-8')
+
+def connect_to_server(port:int,username:str)-> socket:
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect(('127.0.0.1', port))
+    except Exception:
+        print(f"Error: Unable to connect to port {port}.", file=sys.stderr)
+        sys.exit(7)
+
+# ========= Initial Handshake =========
+# Line 94–105: After connecting, must send username and receive join/queue message
+
+    send_message(sock, username)
+
+# Waiting for server welcome or queue message
+    server_response = receive_message(sock)
+    print("Welcome to chatclient, " + username)
+    print(server_response)
+    return sock
